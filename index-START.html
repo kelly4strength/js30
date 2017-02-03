@@ -7,9 +7,12 @@
 </head>
 <body>
 
-
+  <!-- setting up class "keys" in the div -->
   <div class="keys">
+
+    <!-- data-key where "data-" makes a data attribute, not standard, data attributes give you the abiity to emebd custom data attributes on all HTML elements-->
     <div data-key="65" class="key">
+      <!-- kbd  -->
       <kbd>A</kbd>
       <span class="sound">clap</span>
     </div>
@@ -47,6 +50,7 @@
     </div>
   </div>
 
+<!-- corresponding audio elements for the keys defined -->
   <audio data-key="65" src="sounds/clap.wav"></audio>
   <audio data-key="83" src="sounds/hihat.wav"></audio>
   <audio data-key="68" src="sounds/kick.wav"></audio>
@@ -58,6 +62,27 @@
   <audio data-key="76" src="sounds/tink.wav"></audio>
 
 <script>
+// adding javascript to link up keys to sounds and button animation
+// adding class of playing to the element and kicking in the css
+
+// first listen for a key up event
+// first get the element you want to listen for (cound be a window, div, input, text area) - want to hook up the data-key to the audio, find the audio element and play it, find the key div and animate itself.
+  window.addEventListener('keydown', function(e) {
+    // writing the e (event) "keyCode" to the console
+    // console.log(e.keyCode);
+
+    // now we need to say is there an audio element that is linked to this keyCode?
+    // use "const"
+    // querySelectorALL for all
+    // there's no class on the audio, just use the data attribute, user the atribute selector (liked css) like so: ('audio [data-key=65]') - but 65 is going to be a variable that lives inside this event
+    // the variable version gets backticks instead of qoutes and ES6 template string which is the ${}
+    const audio = document.querySelector(`audio[data-key="${e.keyCode}"]`);
+    console.log(audio);
+
+  });
+
+
+
 
 </script>
 
