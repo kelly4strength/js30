@@ -23,6 +23,9 @@ body,html {
   margin: 1rem;
   font-size: 1.5rem;
   padding: 1rem .5rem;
+  /*this is where we start with the animation
+  when we add the class of playing it will make it larger
+  add border color and change the box shadow color*/
   transition: all .07s ease;
   width: 10rem;
   text-align: center;

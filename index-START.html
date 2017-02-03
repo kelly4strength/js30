@@ -77,7 +77,56 @@
     // there's no class on the audio, just use the data attribute, user the atribute selector (liked css) like so: ('audio [data-key=65]') - but 65 is going to be a variable that lives inside this event
     // the variable version gets backticks instead of qoutes and ES6 template string which is the ${}
     const audio = document.querySelector(`audio[data-key="${e.keyCode}"]`);
-    console.log(audio);
+    
+    //selecting the corresponding key for animation
+    const key = document.querySelector(`.key[data-key="${e.keyCode}"]`);
+    // prints the corresponding audio element associated with the key
+    // if console says "null" there is no audio associated
+    // console.log(audio);
+
+    //if no audio associated, stops function from running
+    if (!audio) return;
+    
+    // rewind it to the start of the element so if you hit the key in succesion you can play over and over again
+    audio.currentTime = 0;
+
+    // makes the audio play :)
+    // but if you call .play on an audio element that's already playing, it won't play it again 
+    audio.play();
+    // console.log(key);
+
+    // this is the vanilla javascript
+    key.classList.add('playing');
+
+    // other options 
+    // key.classList.remove('playing');
+    // key.classList.toggle('playing');
+
+    // jquery example
+    // key.addClass('playing')
+
+    // now we need to remove, but if we have a timeout in the js and the css, it will get out of sync - you'll have to fix both to change it, so use a transiton end event that will fire when it's done animating itself
+    // what is a transiton end event? well what is a click event? when you click something it fires off a someone clicked me, or you have a I was transitioned event 
+
+    // function to remove the transtition
+    function removeTransition(e) {
+      // skip if it's not a transform
+      if(e.propertyName !== 'transform') return;
+      // what is this going to be equal to?
+      // you can either console.log to find out console.log(this);
+      // this is always equal to whatever got called against it which is the key!
+      this.classList.remove('playing');
+
+      // prints to console ALL 6 transitions, so pick the transfor (longest transition)
+      // console.log(e);
+    }
+
+    // listen on each key for when the transition end event happens, slect all keys
+    const keys = document.querySelectorAll('.key');
+
+    // each key gets an event listener which is called transitionend and then it removes the transition
+
+    keys.forEach(key => key.addEventListener('transitionend', removeTransition));
 
   });
 
