@@ -63,41 +63,35 @@
 
 <script>
 // adding javascript to link up keys to sounds and button animation
-// adding class of playing to the element and kicking in the css
+// adding class of playing to the element to kick in the css
 
-// first listen for a key up event
-// first get the element you want to listen for (cound be a window, div, input, text area) - want to hook up the data-key to the audio, find the audio element and play it, find the key div and animate itself.
-  window.addEventListener('keydown', function(e) {
-    // writing the e (event) "keyCode" to the console
-    // console.log(e.keyCode);
+// first listen for a key up event and identify the element you want to listen for (could be a window, div, input, text area) and hook up that elemant to the audio and transition animation
 
-    // now we need to say is there an audio element that is linked to this keyCode?
-    // use "const"
-    // querySelectorALL for all
-    // there's no class on the audio, just use the data attribute, user the atribute selector (liked css) like so: ('audio [data-key=65]') - but 65 is going to be a variable that lives inside this event
-    // the variable version gets backticks instead of qoutes and ES6 template string which is the ${}
-    const audio = document.querySelector(`audio[data-key="${e.keyCode}"]`);
-    
-    //selecting the corresponding key for animation
-    const key = document.querySelector(`.key[data-key="${e.keyCode}"]`);
-    // prints the corresponding audio element associated with the key
-    // if console says "null" there is no audio associated
-    // console.log(audio);
+// playSound takes in the event
+function playSound(e) {
+  // use "const"
+  // there's no class on the audio, use the data attribute, use the attribute selector (like in css) like so: ('audio [data-key=65]') - though here 65 will be a variable that lives inside this event
+  // the variable version gets backticks instead of quotes and ES6 template string which is the ${}
+  const audio = document.querySelector(`audio[data-key="${e.keyCode}"]`);
+  
+  //selecting the corresponding key for animation
+  const key = document.querySelector(`.key[data-key="${e.keyCode}"]`);
+  // prints the corresponding audio element associated with the key
+  
+  // if console says "null" there is no audio associated fixed with this if statement
+  //if no audio associated, stops function from running
+  if (!audio) return;
+  
+  // if you call .play on an audio element already playing, it won't play again SO fix with this
+  // rewind it to the start of the element so you hit the key in succesion to play over and over again
+  audio.currentTime = 0;
 
-    //if no audio associated, stops function from running
-    if (!audio) return;
-    
-    // rewind it to the start of the element so if you hit the key in succesion you can play over and over again
-    audio.currentTime = 0;
+  // makes the audio play :)
+  audio.play();
 
-    // makes the audio play :)
-    // but if you call .play on an audio element that's already playing, it won't play it again 
-    audio.play();
-    // console.log(key);
-
-    // this is the vanilla javascript
-    key.classList.add('playing');
-
+  // this is the vanilla javascript to play
+  key.classList.add('playing');
+}
     // other options 
     // key.classList.remove('playing');
     // key.classList.toggle('playing');
@@ -105,32 +99,30 @@
     // jquery example
     // key.addClass('playing')
 
-    // now we need to remove, but if we have a timeout in the js and the css, it will get out of sync - you'll have to fix both to change it, so use a transiton end event that will fire when it's done animating itself
-    // what is a transiton end event? well what is a click event? when you click something it fires off a someone clicked me, or you have a I was transitioned event 
+    // to remove the transition animation, if we have a timeout in the js and the css, it will most likely get out of sync - you'd have to update both to change it, so instead use a transiton end event that will fire when it's done animating itself
 
     // function to remove the transtition
     function removeTransition(e) {
       // skip if it's not a transform
       if(e.propertyName !== 'transform') return;
+      
       // what is this going to be equal to?
       // you can either console.log to find out console.log(this);
       // this is always equal to whatever got called against it which is the key!
       this.classList.remove('playing');
 
-      // prints to console ALL 6 transitions, so pick the transfor (longest transition)
+      // prints to console ALL 6 transitions, so pick the "transform" (longest transition)
       // console.log(e);
     }
 
-    // listen on each key for when the transition end event happens, slect all keys
+    // listen on each key for when the transition end event happens, querySelectorALL for all
     const keys = document.querySelectorAll('.key');
 
     // each key gets an event listener which is called transitionend and then it removes the transition
-
     keys.forEach(key => key.addEventListener('transitionend', removeTransition));
 
-  });
-
-
+// when you keydown it hits playSound
+window.addEventListener('keydown', playSound)
 
 
 </script>
